@@ -1,0 +1,80 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 11.00
+# Visual Studio 2010
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Bounding Box From Toolpath", "Bounding Box From Toolpath\Bounding Box From Toolpath.csproj", "{9FABD698-35B1-43D2-A991-9FB23EEAD85B}"
+EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "Compute Bounding Box Project", "Compute Bounding Box\Compute Bounding Box Project.vcxproj", "{20D767C6-1F0E-4CA9-9F39-F670A2FD86A9}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug DLL|Mixed Platforms = Debug DLL|Mixed Platforms
+		Debug DLL|Win32 = Debug DLL|Win32
+		Debug DLL|X64 = Debug DLL|X64
+		Debug DLL|x86 = Debug DLL|x86
+		Debug|Mixed Platforms = Debug|Mixed Platforms
+		Debug|Win32 = Debug|Win32
+		Debug|X64 = Debug|X64
+		Debug|x86 = Debug|x86
+		Release DLL|Mixed Platforms = Release DLL|Mixed Platforms
+		Release DLL|Win32 = Release DLL|Win32
+		Release DLL|X64 = Release DLL|X64
+		Release DLL|x86 = Release DLL|x86
+		Release|Mixed Platforms = Release|Mixed Platforms
+		Release|Win32 = Release|Win32
+		Release|X64 = Release|X64
+		Release|x86 = Release|x86
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{9FABD698-35B1-43D2-A991-9FB23EEAD85B}.Debug DLL|Mixed Platforms.ActiveCfg = Debug|x86
+		{9FABD698-35B1-43D2-A991-9FB23EEAD85B}.Debug DLL|Mixed Platforms.Build.0 = Debug|x86
+		{9FABD698-35B1-43D2-A991-9FB23EEAD85B}.Debug DLL|Win32.ActiveCfg = Debug|x86
+		{9FABD698-35B1-43D2-A991-9FB23EEAD85B}.Debug DLL|X64.ActiveCfg = Debug|x86
+		{9FABD698-35B1-43D2-A991-9FB23EEAD85B}.Debug DLL|x86.ActiveCfg = Debug|x86
+		{9FABD698-35B1-43D2-A991-9FB23EEAD85B}.Debug DLL|x86.Build.0 = Debug|x86
+		{9FABD698-35B1-43D2-A991-9FB23EEAD85B}.Debug|Mixed Platforms.ActiveCfg = Debug|x86
+		{9FABD698-35B1-43D2-A991-9FB23EEAD85B}.Debug|Mixed Platforms.Build.0 = Debug|x86
+		{9FABD698-35B1-43D2-A991-9FB23EEAD85B}.Debug|Win32.ActiveCfg = Debug|x86
+		{9FABD698-35B1-43D2-A991-9FB23EEAD85B}.Debug|X64.ActiveCfg = Debug|x86
+		{9FABD698-35B1-43D2-A991-9FB23EEAD85B}.Debug|x86.ActiveCfg = Debug|x86
+		{9FABD698-35B1-43D2-A991-9FB23EEAD85B}.Debug|x86.Build.0 = Debug|x86
+		{9FABD698-35B1-43D2-A991-9FB23EEAD85B}.Release DLL|Mixed Platforms.ActiveCfg = Release|x86
+		{9FABD698-35B1-43D2-A991-9FB23EEAD85B}.Release DLL|Mixed Platforms.Build.0 = Release|x86
+		{9FABD698-35B1-43D2-A991-9FB23EEAD85B}.Release DLL|Win32.ActiveCfg = Release|x86
+		{9FABD698-35B1-43D2-A991-9FB23EEAD85B}.Release DLL|X64.ActiveCfg = Release|x86
+		{9FABD698-35B1-43D2-A991-9FB23EEAD85B}.Release DLL|x86.ActiveCfg = Release|x86
+		{9FABD698-35B1-43D2-A991-9FB23EEAD85B}.Release DLL|x86.Build.0 = Release|x86
+		{9FABD698-35B1-43D2-A991-9FB23EEAD85B}.Release|Mixed Platforms.ActiveCfg = Release|x86
+		{9FABD698-35B1-43D2-A991-9FB23EEAD85B}.Release|Mixed Platforms.Build.0 = Release|x86
+		{9FABD698-35B1-43D2-A991-9FB23EEAD85B}.Release|Win32.ActiveCfg = Release|x86
+		{9FABD698-35B1-43D2-A991-9FB23EEAD85B}.Release|X64.ActiveCfg = Release|x86
+		{9FABD698-35B1-43D2-A991-9FB23EEAD85B}.Release|x86.ActiveCfg = Release|x86
+		{9FABD698-35B1-43D2-A991-9FB23EEAD85B}.Release|x86.Build.0 = Release|x86
+		{20D767C6-1F0E-4CA9-9F39-F670A2FD86A9}.Debug DLL|Mixed Platforms.ActiveCfg = Debug|Win32
+		{20D767C6-1F0E-4CA9-9F39-F670A2FD86A9}.Debug DLL|Mixed Platforms.Build.0 = Debug|Win32
+		{20D767C6-1F0E-4CA9-9F39-F670A2FD86A9}.Debug DLL|Win32.ActiveCfg = Debug|Win32
+		{20D767C6-1F0E-4CA9-9F39-F670A2FD86A9}.Debug DLL|Win32.Build.0 = Debug|Win32
+		{20D767C6-1F0E-4CA9-9F39-F670A2FD86A9}.Debug DLL|X64.ActiveCfg = Debug|Win32
+		{20D767C6-1F0E-4CA9-9F39-F670A2FD86A9}.Debug DLL|x86.ActiveCfg = Debug|Win32
+		{20D767C6-1F0E-4CA9-9F39-F670A2FD86A9}.Debug|Mixed Platforms.ActiveCfg = Debug|Win32
+		{20D767C6-1F0E-4CA9-9F39-F670A2FD86A9}.Debug|Mixed Platforms.Build.0 = Debug|Win32
+		{20D767C6-1F0E-4CA9-9F39-F670A2FD86A9}.Debug|Win32.ActiveCfg = Debug|Win32
+		{20D767C6-1F0E-4CA9-9F39-F670A2FD86A9}.Debug|Win32.Build.0 = Debug|Win32
+		{20D767C6-1F0E-4CA9-9F39-F670A2FD86A9}.Debug|X64.ActiveCfg = Debug|Win32
+		{20D767C6-1F0E-4CA9-9F39-F670A2FD86A9}.Debug|x86.ActiveCfg = Debug|Win32
+		{20D767C6-1F0E-4CA9-9F39-F670A2FD86A9}.Release DLL|Mixed Platforms.ActiveCfg = Release|Win32
+		{20D767C6-1F0E-4CA9-9F39-F670A2FD86A9}.Release DLL|Mixed Platforms.Build.0 = Release|Win32
+		{20D767C6-1F0E-4CA9-9F39-F670A2FD86A9}.Release DLL|Win32.ActiveCfg = Release|Win32
+		{20D767C6-1F0E-4CA9-9F39-F670A2FD86A9}.Release DLL|Win32.Build.0 = Release|Win32
+		{20D767C6-1F0E-4CA9-9F39-F670A2FD86A9}.Release DLL|X64.ActiveCfg = Release|Win32
+		{20D767C6-1F0E-4CA9-9F39-F670A2FD86A9}.Release DLL|x86.ActiveCfg = Release|Win32
+		{20D767C6-1F0E-4CA9-9F39-F670A2FD86A9}.Release|Mixed Platforms.ActiveCfg = Release|Win32
+		{20D767C6-1F0E-4CA9-9F39-F670A2FD86A9}.Release|Mixed Platforms.Build.0 = Release|Win32
+		{20D767C6-1F0E-4CA9-9F39-F670A2FD86A9}.Release|Win32.ActiveCfg = Release|Win32
+		{20D767C6-1F0E-4CA9-9F39-F670A2FD86A9}.Release|Win32.Build.0 = Release|Win32
+		{20D767C6-1F0E-4CA9-9F39-F670A2FD86A9}.Release|X64.ActiveCfg = Release|Win32
+		{20D767C6-1F0E-4CA9-9F39-F670A2FD86A9}.Release|x86.ActiveCfg = Release|Win32
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+EndGlobal
