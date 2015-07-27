@@ -33,9 +33,12 @@
 #include <ws2tcpip.h>
 #include <Windows.h>
 #include <stdio.h>
+#include <msclr\marshal_cppstd.h>
 #include "make_box.h"
 
 using namespace System::Runtime::InteropServices;
+using namespace msclr::interop;
+
 #define VERTEX_NORMAL_RENAMED_IN_LATEST_VERSIONS 3.14
 //#define FOUNDMAX(x) (std::cout << "Found " << #x << ": " << x << std::endl << "Enter new " << #x << " that is greater than or equal to found " << #x << ": ")
 //#define FOUNDMIN(x) (std::cout << "Found " << #x << ": " << x << std::endl << "Enter new " << #x << " that is less than or equal to found " << #x << ": ")
@@ -876,7 +879,7 @@ public ref class BBoxer
 			char *foo[1];
 			foo[0] = (char*)Marshal::StringToHGlobalAnsi(wpname).ToPointer();
 			//CURRENTLY HERE!! CANNOT CONVERT SYSTEM::STRING^ TO STD::STRING ETC...
-			std::string s = unit;
+			std::string s = marshal_as<std::string>(unit);
 			std::string returnFileName = run(foo, xmax, xmin, ymax, ymin, zmax, zmin, s);
 			System::String^ rfn = gcnew System::String(returnFileName.c_str());
 			return rfn;
