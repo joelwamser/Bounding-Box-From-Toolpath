@@ -82,7 +82,6 @@ namespace Bounding_Box_From_Toolpath
                     //of my test cases.
                     //Console.ReadLine();
                 }
-
             }
         }
 
@@ -95,35 +94,46 @@ namespace Bounding_Box_From_Toolpath
             for (long i = 0; i < size; ++i)
             {
                 long path_id = f.GetWorkingstepPathNext(exe_id, i, out isContact);
-                decode_path(f, path_id);
+                if(!f.GetPathRapid(path_id))
+                    decode_path(f, path_id);
+                //other wise it is a rapid path, so ignore it
             }
         }
 
         //this currently treats a selective as a workplan and executes all of the
         //executables that exist inside of it instead of just selecting one
-        static void decode_selective(Finder f, long exe_id)
+        static void decode_selective(AptStepMaker a, Finder f, long exe_id, bool enFlags)
         {
             long size = f.GetSelectiveExecutableCount(exe_id);
             for (long i = 0; i < size; ++i)
             {
                 long e_id = f.GetSelectiveExecutableNext(exe_id, i);
                 Console.WriteLine("Executable Type from Selective: {0}", f.GetExecutableType(e_id));
+                //if we care about whether or not executables are enabled
+                //and if the executable has been disabled
+                //then skip this executable
+                if (enFlags && !a.GetExecutableIsEnabled(e_id))
+                {
+                    Console.WriteLine("Disabled!!");
+                    //Console.ReadLine();
+                    continue;
+                }
                 if (f.IsWorkingstep(e_id))
                 {
                     decode_workingstep(f, e_id);
                 }
                 else if (f.IsWorkplan(e_id))
                 {
-                    decode_workplan(f, e_id);
+                    decode_workplan(a, f, e_id, enFlags);
                 }
                 else if (f.IsSelective(e_id))
                 {
-                    decode_selective(f, e_id);
+                    decode_selective(a, f, e_id, enFlags);
                 }
             }
         }
 
-        static void decode_workplan(Finder f, long wp_id)
+        static void decode_workplan(AptStepMaker a, Finder f, long wp_id, bool enFlags)
         {
             long size = f.GetNestedExecutableCount(wp_id);
             Console.Write("Number of nested executables: ");
@@ -132,27 +142,64 @@ namespace Bounding_Box_From_Toolpath
             {
                 long exe_id = f.GetNestedExecutableNext(wp_id, i);
                 Console.WriteLine("Executable Type: {0}", f.GetExecutableType(exe_id));
-                if (f.IsWorkingstep(exe_id))
+                //if we care about whether or not executables are enabled
+                //and if the executable has been disabled
+                //then skip this executable
+                if (enFlags && !a.GetExecutableIsEnabled(exe_id))
                 {
+                    Console.WriteLine("Disabled!!");
+                    //Console.ReadLine();
+                    continue;
+                }
+                if (f.IsWorkingstep(exe_id) && f.GetProcessSpeed(exe_id) != 0)
+                {
+                    //double speed = f.GetProcessSpeed(exe_id);
+                    //Console.WriteLine("Process Speed: {0}", f.GetProcessSpeed(path_id));
+                    //Console.WriteLine(speed);
+                    //Console.ReadLine();
                     decode_workingstep(f, exe_id);
                 }
                 else if (f.IsWorkplan(exe_id))
                 {
-                    decode_workplan(f, exe_id);
+                    decode_workplan(a, f, exe_id, enFlags);
                 }
-                /*else if (f.IsSelective(exe_id))
+                else if (f.IsSelective(exe_id))
                 {
-                    decode_selective(f, exe_id);
-                }*/
+                    decode_selective(a, f, exe_id, enFlags);
+                }
                 //else its an NC Function (unimportant right?)
+            }
+        }
+
+        static bool prompt_user()
+        {
+            while (true)
+            {
+                string userInput = Console.ReadLine();
+                if (userInput == "Yes" || userInput == "yes" || userInput == "y")
+                {
+                    return true;
+                }
+                else if (userInput == "No" || userInput == "no" || userInput == "n")
+                {
+                    return false;
+                }
+                else
+                {
+                    Console.WriteLine("Invalid entry. Try again");
+                }
             }
         }
 
         static void Main(string[] args)
         {
-            //Possibly add code here to input from the command line either inches
-            //or millimeters to set the units to using APIUnitsInch() or
-            //APIUnitsMM()
+            //int afjko = CylBoxer.RunMain();
+            //Console.ReadLine();
+
+            Console.WriteLine("Run program with Executable Enable Flags? Enter \"Yes\" or \"No\".");
+            bool useEnableFlags = prompt_user();
+            Console.WriteLine("Enter \"Yes\" to use Cylinder Stock. Enter \"No\" to use Rectangular Prism Stock.");
+            bool useCylinerStock = prompt_user();
             string inputStepNCFileName = args[0];
             //this handles both .stpnc's and .238's
             string hold = inputStepNCFileName.Replace(".238", "");
@@ -163,7 +210,7 @@ namespace Bounding_Box_From_Toolpath
             Finder find1 = new Finder();
             find1.Open238(inputStepNCFileName);
             long wp_id = find1.GetMainWorkplan();
-            decode_workplan(find1, wp_id);
+            decode_workplan(asm1, find1, wp_id, useEnableFlags);
             Console.WriteLine("Path units: {0}", path_units);
             Console.WriteLine("Xmax: {0} ", xmax);
             Console.WriteLine("Xmin: {0} ", xmin);
@@ -171,7 +218,7 @@ namespace Bounding_Box_From_Toolpath
             Console.WriteLine("Ymin: {0} ", ymax);
             Console.WriteLine("Zmax: {0} ", zmax);
             Console.WriteLine("Zmin: {0} ", zmin);
-            string rawMaterialName = BBoxer.RunMain(toSend, xmax, xmin, ymax, ymin, zmax, zmin, path_units);
+            string rawMaterialName = BBoxer.RunMain(toSend, xmax, xmin, ymax, ymin, zmax, zmin, path_units, useCylinerStock);
             asm1.Rawpiece(rawMaterialName);
             asm1.SaveAsP21(finalFileName);
         }

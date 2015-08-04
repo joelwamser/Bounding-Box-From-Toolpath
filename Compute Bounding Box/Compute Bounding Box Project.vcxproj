@@ -66,6 +66,7 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="context_utils.cxx" />
+    <ClCompile Include="cylinder.cpp" />
     <ClCompile Include="facet_asm.cpp" />
     <ClCompile Include="geometry_utils.cxx" />
     <ClCompile Include="make_box.cxx" />
@@ -73,6 +74,7 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="context_utils.h" />
+    <ClInclude Include="cylinder.h" />
     <ClInclude Include="geometry_utils.h" />
     <ClInclude Include="make_box.h" />
     <ClInclude Include="unit_utils.h" />

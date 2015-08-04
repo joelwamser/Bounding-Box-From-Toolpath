@@ -23,8 +23,6 @@
 #include <stp_schema.h>
 #include <stix.h>
 #include <stixmesh.h>
-#include "context_utils.h"
-#include "unit_utils.h"
 #include <string>
 #include <sstream>
 #include <iostream>
@@ -34,7 +32,11 @@
 #include <Windows.h>
 #include <stdio.h>
 #include <msclr\marshal_cppstd.h>
+#include <cmath>
+#include "context_utils.h"
+#include "unit_utils.h"
 #include "make_box.h"
+#include "cylinder.h"
 
 using namespace System::Runtime::InteropServices;
 using namespace msclr::interop;
@@ -57,13 +59,17 @@ void user_modify_all_minmax_values(
 	double &zmax,
 	double &zmin);
 
-void output_raw_piece(double &xmax, double &xmin, double &ymax, double &ymin, double &zmax, 
+void output_raw_piece_box(double &xmax, double &xmin, double &ymax, double &ymin, double &zmax, 
+	double &zmin, StixUnit &angleUnit, StixUnit &lengthUnit, StixUnit &solidAngleUnit, std::string &fileName);
+
+void output_raw_piece_cylinder(double &xmax, double &xmin, double &ymax, double &ymin, double &zmax, 
 	double &zmin, StixUnit &angleUnit, StixUnit &lengthUnit, StixUnit &solidAngleUnit, std::string &fileName);
 
 stp_shape_representation * create_empty_product_with_geometry(
     const StixUnit &au, const StixUnit &lu, const StixUnit &sau);
 
-std::string run(char ** argv, double &xmax, double &xmin, double &ymax, double &ymin, double &zmax, double &zmin, std::string &lengthUnit)
+std::string run(char ** argv, double &xmax, double &xmin, double &ymax, double &ymin, 
+	double &zmax, double &zmin, std::string &lengthUnit, bool &useCylinerStock)
 {
 	user_modify_all_minmax_values(xmax, xmin, ymax, ymin, zmax, zmin);
     ROSE.quiet(1);
@@ -102,13 +108,16 @@ std::string run(char ** argv, double &xmax, double &xmin, double &ymax, double &
 	StixUnit au = stixunit_deg;
 	StixUnit sau = stixunit_steradian;
 
-	output_raw_piece(xmax, xmin, ymax, ymin, zmax, zmin, lu, au, sau, outputFileName);
+	if(!useCylinerStock)
+		output_raw_piece_box(xmax, xmin, ymax, ymin, zmax, zmin, au, lu, sau, outputFileName);
+	else
+		output_raw_piece_cylinder(xmax, xmin, ymax, ymin, zmax, zmin, au, lu, sau, outputFileName);
 
     system("pause");
     return outputFileName;
 }
 
-void output_raw_piece(double &xmax, double &xmin, double &ymax, double &ymin, double &zmax, 
+void output_raw_piece_box(double &xmax, double &xmin, double &ymax, double &ymin, double &zmax, 
 	double &zmin, StixUnit &angleUnit, StixUnit &lengthUnit, StixUnit &solidAngleUnit, std::string &fileName)
 {
     RoseDesign * d = new RoseDesign(fileName.c_str());
@@ -126,6 +135,26 @@ void output_raw_piece(double &xmax, double &xmin, double &ymax, double &ymin, do
     char* color = "red";
     create_any_box(shape, x, y, z, x_width, y_width, z_width, color);
     d->save();
+}
+
+void output_raw_piece_cylinder(double &xmax, double &xmin, double &ymax, double &ymin, double &zmax, 
+	double &zmin, StixUnit &angleUnit, StixUnit &lengthUnit, StixUnit &solidAngleUnit, std::string &fileName)
+{
+	RoseDesign* d = new RoseDesign(fileName.c_str());
+	ROSE.useDesign(d);
+	stp_advanced_brep_shape_representation* shape = 
+		create_empty_product_with_geometry_cylinder(angleUnit, lengthUnit, solidAngleUnit);
+	double diameter = 2*sqrt((pow(xmax - ((xmax + xmin)/2), 2) + pow(ymax - ((ymax + ymin)/2), 2)));
+	double height = zmax - zmin;
+	double x = (xmax + xmin) / 2;
+	double y = (ymax + ymin) / 2;
+	double z = zmax;
+	std::cout << "From facet_asm.cpp" << std::endl;
+	std::cout << std::endl << "diameter = " << diameter << std::endl 
+		<< "height: " << height << std::endl;
+	char* color = "red";
+	create_any_cylinder(shape, diameter, height, x, y, z, color);
+	d->save();
 }
 
 stp_shape_representation * create_empty_product_with_geometry(const StixUnit &au, const StixUnit &lu, const StixUnit &sau)
@@ -350,12 +379,13 @@ public ref class BBoxer
 {
 	public:
 		static System::String^ RunMain(System::String^ wpname, System::Double xmax, System::Double xmin, System::Double ymax,
-			System::Double ymin, System::Double zmax, System::Double zmin, System::String^ unit)
+			System::Double ymin, System::Double zmax, System::Double zmin, System::String^ unit, System::Boolean b)
 		{
 			char *foo[1];
 			foo[0] = (char*)Marshal::StringToHGlobalAnsi(wpname).ToPointer();
 			std::string s = marshal_as<std::string>(unit);
-			std::string returnFileName = run(foo, xmax, xmin, ymax, ymin, zmax, zmin, s);
+			//bool b_ = marshal_as<bool>(b);
+			std::string returnFileName = run(foo, xmax, xmin, ymax, ymin, zmax, zmin, s, b);
 			System::String^ rfn = gcnew System::String(returnFileName.c_str());
 			return rfn;
 		}
